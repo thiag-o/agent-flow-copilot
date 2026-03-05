@@ -1,9 +1,14 @@
 ---
 description: E2E testing specialist using Cypress with automatic retry logic and error reporting.
+name: E2E Tester
+tools: ['read', 'search', 'search/codebase', 'agent', 'execute', 'web/fetch']
+user-invokable: false
+disable-model-invocation: false
 handoffs: 
   - label: Retry - Send Back to Planner
-    agent: high-level-plan
+    agent: speckit.plan
     prompt: The E2E tests failed. Please review and fix the following issues in the implementation plan
+    send: false
   - label: Generate Final Report
     agent: reporter
     prompt: Testing complete. Generate comprehensive implementation report with all test results and unresolved errors

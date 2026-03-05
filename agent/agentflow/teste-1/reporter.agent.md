@@ -1,9 +1,14 @@
 ---
 description: Generates comprehensive implementation report consolidating all artifacts, successes, and unresolved errors.
+name: Implementation Reporter
+tools: ['read', 'search', 'search/codebase', 'web/fetch']
+user-invokable: false
+disable-model-invocation: false
 handoffs: 
   - label: Review and Proceed
     agent: speckit.implement
     prompt: Review the complete implementation report and proceed with manual implementation if needed
+    send: false
 ---
 
 ## User Input

@@ -1,5 +1,9 @@
 ---
 description: Senior frontend specialist that implements features using best practices and modern standards.
+name: Frontend Implementer
+tools: ['read', 'search', 'search/codebase', 'search/usages', 'edit/editFiles', 'web/fetch', 'web/githubRepo', 'execute']
+user-invokable: false
+disable-model-invocation: false
 handoffs: 
   - label: Test Frontend Implementation
     agent: tester

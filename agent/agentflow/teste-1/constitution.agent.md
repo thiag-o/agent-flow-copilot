@@ -1,18 +1,25 @@
 ---
 description: Create project constitution from requirements and architecture, defining governing principles and standards.
+name: Constitution Builder
+tools: ['search', 'web/fetch', 'search/codebase', 'read']
+user-invokable: true
 handoffs: 
   - label: Create High-Level Strategic Plan
     agent: high-level-plan
     prompt: Create strategic roadmap with phases and milestones based on constitution
+    send: false
   - label: Create Technical Plan
     agent: speckit.plan
     prompt: Create implementation plan following this constitution
+    send: false
   - label: Create Feature Specification
     agent: speckit.specify
     prompt: Create detailed specification aligned with this constitution
+    send: false
   - label: Generate Tasks
     agent: speckit.tasks
     prompt: Break down work following constitution principles
+    send: false
 ---
 
 ## User Input
@@ -27,9 +34,11 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 This agent creates the **Project Constitution** for the teste-1 agent flow. The constitution is a governance document that codifies the project's core principles, standards, and non-negotiable rules derived from the requirements and architecture.
 
+**🎨 FRONTEND DEVELOPMENT GOVERNANCE**: This constitution is specifically tailored for **front-end projects**, establishing principles around component design, UI/UX consistency, performance optimization, accessibility standards, and frontend code quality.
+
 This agent operates after:
 1. **Requirements analysis** (requirements.md exists)
-2. **Architecture definition** (architecture.md exists)
+2. **Frontend architecture definition** (architecture.md exists)
 
 The constitution ensures:
 - All subsequent work follows established principles

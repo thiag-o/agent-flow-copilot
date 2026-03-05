@@ -1,9 +1,13 @@
 ---
 description: Automated pipeline orchestrator that executes planning, tasks, frontend development, E2E testing, and reporting in sequence.
+name: Implementation Pipeline
+tools: ['agent', 'read', 'search', 'search/codebase', 'web/fetch']
+user-invokable: true
 handoffs: 
   - label: Review Implementation Report
     agent: speckit.implement
     prompt: Review the implementation report and proceed with manual implementation if needed
+    send: false
 ---
 
 ## User Input
@@ -16,7 +20,14 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 ## Outline
 
-This agent is an **Automated Implementation Pipeline Orchestrator** for the teste-1 agent flow. It orchestrates the execution of multiple specialized agents in a defined sequence to take the project from feature breakdown through to implementation readiness with full E2E testing.
+This agent is an **Automated Implementation Pipeline Orchestrator** for the teste-1 agent flow. It orchestrates the execution of multiple specialized agents in a defined sequence to take the project from feature breakdown through to frontend implementation readiness with full E2E testing.
+
+**🎨 FRONTEND IMPLEMENTATION PIPELINE**: This pipeline is specifically designed for **automated front-end development**. It orchestrates:
+- **Frontend Planning**: Technical plan focused on components, styling, state management
+- **Frontend Tasks**: Breaking down UI components, pages, and interactions
+- **Frontend Implementation**: Senior frontend specialist applying React/Vue/Angular best practices
+- **E2E Testing**: Cypress tests for user flows, interactions, and UI validation
+- **Comprehensive Reporting**: Frontend-specific metrics and quality assessment
 
 This agent operates after:
 1. **Feature breakdown** (feature-breakdown.md exists)
@@ -95,11 +106,14 @@ Executing agents in sequence...
 
 ### Step 3: Execute Planning Agent (Agent 1/5)
 
-Invoke the planning subagent to create detailed technical implementation plan.
+Invoke the Planning subagent to create detailed technical implementation plan.
 
-**Subagent**: Use `runSubagent` with agent name `speckit.plan`
+**Agent Name**: `Plan` (built-in agent)
 
-**Prompt to send**:
+**Instructions**:
+Use the `runSubagent` tool to invoke the Plan agent with the following prompt. The agent will run autonomously and return the result.
+
+**Prompt Template**:
 ```
 Create a detailed technical implementation plan based on the feature breakdown.
 
@@ -122,8 +136,9 @@ Generate:
 Output: plan.md
 ```
 
-**Wait for completion** and validate output:
-- ✅ plan.md file created
+**Validation**:
+After the subagent completes, validate:
+- ✅ plan.md file created in agent/agentflow/teste-1/
 - ✅ All features from feature-breakdown.md addressed
 - ✅ Technical decisions documented
 
@@ -138,11 +153,14 @@ If failed, stop pipeline and report error.
 
 ### Step 4: Execute Task Breakdown Agent (Agent 2/5)
 
-Invoke the task breakdown subagent to break features into actionable tasks.
+Invoke the Task Breakdown subagent to break features into actionable tasks.
 
-**Subagent**: Use `runSubagent` with agent name `speckit.tasks`
+**Agent Name**: `Tasks` (built-in agent)
 
-**Prompt to send**:
+**Instructions**:
+Use the `runSubagent` tool to invoke the Tasks agent with the following prompt. The agent will run autonomously and return the result.
+
+**Prompt Template**:
 ```
 Break down the features from feature-breakdown.md into actionable development tasks.
 
@@ -162,8 +180,9 @@ Generate:
 Output: tasks.md
 ```
 
-**Wait for completion** and validate output:
-- ✅ tasks.md file created
+**Validation**:
+After the subagent completes, validate:
+- ✅ tasks.md file created in agent/agentflow/teste-1/
 - ✅ All features broken down into tasks
 - ✅ Dependencies identified
 
@@ -178,11 +197,14 @@ If failed, stop pipeline and report error.
 
 ### Step 5: Execute Frontend Agent (Agent 3/5)
 
-Invoke the specialized frontend agent to implement features with senior-level best practices.
+Invoke the specialized Frontend subagent to implement features with senior-level best practices.
 
-**Subagent**: Use `runSubagent` with agent name `frontend` (agent flow agent)
+**Agent Name**: `Frontend Implementer` (custom agent)
 
-**Prompt to send**:
+**Instructions**:
+Use the `runSubagent` tool to invoke the Frontend Implementer agent. This custom agent has specialized tools for implementation (editFiles, codebase, etc.) and will work autonomously.
+
+**Prompt Template**:
 ```
 Implement the frontend features based on the planning and task breakdown.
 
@@ -206,8 +228,9 @@ This is an automated pipeline execution. Implement all features following senior
 Generate frontend-implementation.md with complete implementation details.
 ```
 
-**Wait for completion** and validate output:
-- ✅ frontend-implementation.md file created
+**Validation**:
+After the subagent completes, validate:
+- ✅ frontend-implementation.md file created in agent/agentflow/teste-1/
 - ✅ All features from feature-breakdown.md implemented
 - ✅ Best practices applied and documented
 - ✅ Component architecture defined
@@ -228,11 +251,14 @@ If failed, stop pipeline and report error.
 
 ### Step 6: Execute Tester Agent (Agent 4/5)
 
-Invoke the specialized tester agent to run comprehensive E2E tests with Cypress and automatic retry logic.
+Invoke the specialized Tester subagent to run comprehensive E2E tests with Cypress and automatic retry logic.
 
-**Subagent**: Use `runSubagent` with agent name `tester` (agent flow agent)
+**Agent Name**: `E2E Tester` (custom agent)
 
-**Prompt to send**:
+**Instructions**:
+Use the `runSubagent` tool to invoke the E2E Tester agent. This custom agent has access to terminal tools for running Cypress tests and can invoke the high-level-plan agent as a subagent for retry logic.
+
+**Prompt Template**:
 ```
 Run comprehensive E2E testing with Cypress for the frontend implementation.
 
@@ -262,8 +288,9 @@ Generate test-report.md with complete test results and any unresolved issues.
 - Tester re-runs tests (new attempt)
 - After 3 attempts or all tests pass: Hands off to reporter agent
 
-**Wait for completion** (including any retry cycles) and validate output:
-- ✅ test-report.md file created
+**Validation**:
+After the subagent completes (including any retry cycles), validate:
+- ✅ test-report.md file created in agent/agentflow/teste-1/
 - ✅ All features tested comprehensively
 - ✅ Test results documented (pass/fail)
 - ✅ Retry attempts tracked (if any)
@@ -287,11 +314,14 @@ If failed critically, stop pipeline and report error.
 
 ### Step 7: Execute Reporter Agent (Agent 5/5)
 
-Invoke the specialized reporter agent to generate comprehensive implementation report consolidating all pipeline outputs.
+Invoke the specialized Reporter subagent to generate comprehensive implementation report consolidating all pipeline outputs.
 
-**Subagent**: Use `runSubagent` with agent name `reporter` (agent flow agent)
+**Agent Name**: `Implementation Reporter` (custom agent)
 
-**Prompt to send**:
+**Instructions**:
+Use the `runSubagent` tool to invoke the Implementation Reporter agent. This custom agent has read-only tools and will generate a comprehensive report of all pipeline activities.
+
+**Prompt Template**:
 ```
 Generate comprehensive implementation report consolidating all pipeline outputs.
 
@@ -327,8 +357,9 @@ Special focus: Document ALL unresolved issues from test-report.md with complete 
 Output: implementation-report.md
 ```
 
-**Wait for completion** and validate output:
-- ✅ implementation-report.md file created
+**Validation**:
+After the subagent completes, validate:
+- ✅ implementation-report.md file created in agent/agentflow/teste-1/
 - ✅ All pipeline phases documented
 - ✅ Executive summary included
 - ✅ Unresolved issues fully documented
